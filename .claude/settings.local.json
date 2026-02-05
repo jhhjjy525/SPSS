@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(npm start)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(cmd //c \"taskkill /PID 10852 /F\")",
+      "Bash(cmd //c \"taskkill /PID 20260 /F\")",
+      "Bash(cmd //c \"taskkill /PID 21260 /F\")",
+      "Bash(npm install)",
+      "Bash(ffmpeg:*)",
+      "Bash(npm install:*)",
+      "Bash(vercel --version:*)",
+      "Bash(vercel login:*)",
+      "Bash(vercel:*)",
+      "WebFetch(domain:youtu.be)",
+      "WebFetch(domain:cloudinary.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:mcpservers.org)",
+      "WebFetch(domain:www.pulsemcp.com)",
+      "WebFetch(domain:aws.amazon.com)",
+      "WebFetch(domain:docs.cloud.google.com)",
+      "Bash(ls -la \"c:\\\\Users\\\\jhhjj\\\\OneDrive\\\\바탕 화면\\\\AX build\\\\SPSS_v1\\\\api\"\" 2>/dev/null || dir \"c:UsersjhhjjOneDrive바탕 화면AX buildSPSS_v1api \")",
+      "WebFetch(domain:api.ncloud-docs.com)",
+      "WebFetch(domain:www.tridot.io)",
+      "WebFetch(domain:ai.google.dev)",
+      "Bash(python:*)",
+      "WebFetch(domain:fal.ai)",
+      "Bash(npx vercel:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

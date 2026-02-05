@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신한 Premier Shorts Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 모든 한글 Google Fonts 로드 -->
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Black+And+White+Picture&family=Black+Han+Sans&family=Cute+Font&family=Do+Hyeon&family=Dongle:wght@400;700&family=East+Sea+Dokdo&family=Gaegu:wght@400;700&family=Gamja+Flower&family=Gothic+A1:wght@400;700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Grandiflora+One&family=Gugi&family=Hahmlet:wght@400;700&family=Hi+Melody&family=IBM+Plex+Sans+KR:wght@400;700&family=Jua&family=Kirang+Haerang&family=Moirai+One&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&family=Orbit&family=Poor+Story&family=Single+Day&family=Song+Myung&family=Stylish&family=Sunflower:wght@300;500;700&family=Yeon+Sung&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 배경 효과 -->
+    <div class="bg-gradient"></div>
+    <div class="bg-particles" id="particles"></div>
+    
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="Logo.png" alt="신한 Premier" class="header-logo-img">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-sub">SHORTS STUDIO</span>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                AI-Powered Video Generator
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <main class="main-container">
+        <!-- 섹션 1: 콘텐츠 입력 -->
+        <section class="section" id="section-input">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <div class="section-title">
+                    <h2>콘텐츠 입력</h2>
+                    <p>홍보할 내용을 텍스트로 입력하거나 PDF 파일을 업로드하세요</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="input-tabs">
+                    <button class="tab-btn active" data-tab="text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                        텍스트 입력
+                    </button>
+                    <button class="tab-btn" data-tab="url">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                        URL 입력
+                    </button>
+                    <button class="tab-btn" data-tab="pdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <path d="M9 15v-2h6v2"/>
+                            <path d="M12 13v5"/>
+                        </svg>
+                        PDF 업로드
+                    </button>
+                </div>
+                
+                <div class="tab-content active" id="tab-text">
+                    <div class="textarea-wrapper">
+                        <textarea id="content-input" placeholder="홍보할 내용을 입력하세요...&#10;&#10;예시:&#10;신한 Premier는 고객님의 자산을 체계적으로 관리하는 프리미엄 서비스입니다.&#10;전문 PB가 1:1 맞춤 상담을 제공하며, 다양한 투자 포트폴리오를 추천해 드립니다."></textarea>
+                        <div class="textarea-footer">
+                            <span class="char-count"><span id="char-count">0</span> / 10,000자</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-url">
+                    <div class="url-input-wrapper">
+                        <div class="url-input-group">
+                            <input type="url" id="url-input" placeholder="https://example.com/article" class="url-text-input">
+                            <button type="button" id="extract-url-btn" class="extract-url-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                    <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/>
+                                </svg>
+                                본문 추출
+                            </button>
+                        </div>
+                        <p class="url-hint">뉴스 기사, 블로그 등의 URL을 입력하면 본문 내용을 자동으로 추출합니다</p>
+                    </div>
+                    <div class="url-loading" id="url-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>본문을 추출하는 중...</p>
+                    </div>
+                    <div class="url-content" id="url-content" style="display: none;">
+                        <div class="url-content-header">
+                            <h4 id="url-title">추출된 본문</h4>
+                            <button type="button" id="url-content-clear" class="url-clear-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="url-text" id="url-text"></div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-pdf">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 64 64" fill="none">
+                                <rect x="8" y="8" width="48" height="48" rx="12" stroke="url(#uploadGrad)" stroke-width="2" stroke-dasharray="6 4"/>
+                                <path d="M32 24v16M24 32h16" stroke="url(#uploadGrad)" stroke-width="2" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="uploadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#0046FF"/>
+                                        <stop offset="100%" stop-color="#00C4B4"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <p class="upload-text">PDF 파일을 드래그하거나 클릭하여 업로드</p>
+                        <p class="upload-hint">최대 10MB까지 지원</p>
+                        <input type="file" id="pdf-input" accept=".pdf" hidden>
+                    </div>
+                    <div class="uploaded-file" id="uploaded-file" style="display: none;">
+                        <div class="file-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                        </div>
+                        <div class="file-info">
+                            <span class="file-name" id="file-name"></span>
+                            <span class="file-size" id="file-size"></span>
+                        </div>
+                        <button class="file-remove" id="file-remove">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="pdf-content" id="pdf-content" style="display: none;">
+                        <h4>추출된 텍스트</h4>
+                        <div class="pdf-text" id="pdf-text"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 영상 설정 -->
+        <section class="section" id="section-settings">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <div class="section-title">
+                    <h2>영상 설정</h2>
+                    <p>원하는 영상 스타일과 옵션을 선택하세요</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <!-- 영상 스타일 -->
+                <div class="setting-group">
+                    <h3 class="setting-label">영상 스타일</h3>
+                    <div class="style-cards">
+                        <label class="style-card">
+                            <input type="radio" name="video-style" value="premium" checked>
+                            <div class="card-content">
+                                <div class="card-icon premium-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <path d="M16 4L20 12L28 13L22 19L24 28L16 24L8 28L10 19L4 13L12 12L16 4Z" fill="url(#premiumGrad)"/>
+                                        <defs>
+                                            <linearGradient id="premiumGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#FFD700"/>
+                                                <stop offset="100%" stop-color="#FFA500"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <span class="card-title">프리미엄</span>
+                                <span class="card-desc">고급스럽고 세련된 느낌</span>
+                            </div>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="video-style" value="modern">
+                            <div class="card-content">
+                                <div class="card-icon modern-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <rect x="4" y="4" width="24" height="24" rx="4" stroke="#00C4B4" stroke-width="2"/>
+                                        <circle cx="16" cy="16" r="6" fill="#00C4B4"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">모던</span>
+                                <span class="card-desc">깔끔하고 현대적인</span>
+                            </div>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="video-style" value="minimal">
+                            <div class="card-content">
+                                <div class="card-icon minimal-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <line x1="8" y1="16" x2="24" y2="16" stroke="#94A3B8" stroke-width="2"/>
+                                        <circle cx="16" cy="16" r="3" fill="#64748B"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">미니멀</span>
+                                <span class="card-desc">심플하고 절제된</span>
+                            </div>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="video-style" value="animation">
+                            <div class="card-content">
+                                <div class="card-icon animation-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <circle cx="10" cy="16" r="4" fill="#FF6B6B"/>
+                                        <circle cx="22" cy="12" r="3" fill="#4ECDC4"/>
+                                        <circle cx="20" cy="22" r="5" fill="#FFE66D"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">애니메이션</span>
+                                <span class="card-desc">친근하고 동적인</span>
+                            </div>
+                        </label>
+                        <label class="style-card">
+                            <input type="radio" name="video-style" value="cinematic">
+                            <div class="card-content">
+                                <div class="card-icon cinematic-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <rect x="4" y="8" width="24" height="16" rx="2" stroke="#8B5CF6" stroke-width="2"/>
+                                        <circle cx="12" cy="16" r="3" fill="#8B5CF6"/>
+                                        <circle cx="20" cy="16" r="3" fill="#8B5CF6"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">시네마틱</span>
+                                <span class="card-desc">영화 같은 연출</span>
+                            </div>
+                        </label>
+                        <label class="style-card custom-style">
+                            <input type="radio" name="video-style" value="custom">
+                            <div class="card-content">
+                                <div class="card-icon custom-icon">
+                                    <svg viewBox="0 0 32 32" fill="none">
+                                        <path d="M24 8L8 24M8 8l16 16" stroke="#0046FF" stroke-width="2" stroke-linecap="round"/>
+                                        <circle cx="16" cy="16" r="10" stroke="#0046FF" stroke-width="2" stroke-dasharray="4 4"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">직접 입력</span>
+                                <span class="card-desc">프롬프트 커스텀</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="custom-style-input" id="custom-style-input" style="display: none;">
+                        <textarea id="custom-style-text" placeholder="원하는 영상 스타일을 직접 입력하세요...&#10;예: 네온 사이버펑크 스타일, 밤의 도시 배경, 빛나는 그래픽 효과"></textarea>
+                    </div>
+                </div>
+
+                <!-- 영상 생성 방식 -->
+                <div class="setting-group">
+                    <h3 class="setting-label">영상 생성 방식</h3>
+                    <div class="generation-mode-options">
+                        <label class="generation-mode-option">
+                            <input type="radio" name="generation-mode" value="image" checked>
+                            <div class="option-content">
+                                <div class="mode-icon">🖼️</div>
+                                <div class="mode-info">
+                                    <span class="option-title">이미지 기반</span>
+                                    <span class="option-desc">고품질 이미지 + Ken Burns 효과</span>
+                                    <span class="mode-badge fast">빠름 · 저비용</span>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="generation-mode-option">
+                            <input type="radio" name="generation-mode" value="video">
+                            <div class="option-content">
+                                <div class="mode-icon">🎬</div>
+                                <div class="mode-info">
+                                    <span class="option-title">AI 영상 기반</span>
+                                    <span class="option-desc">OpenAI Sora로 움직이는 영상 생성</span>
+                                    <span class="mode-badge premium">고품질 · 고비용</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 영상 길이 -->
+                <div class="setting-group">
+                    <h3 class="setting-label">🎬 영상 길이</h3>
+                    <div class="duration-control">
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <input type="range" id="duration-slider" min="10" max="120" value="30" class="duration-slider">
+                            <div class="duration-labels" style="margin-top: 4px; padding-right: 0;">
+                                <span>10초</span>
+                                <span style="margin-left: -120px;">1분</span>
+                                <span style="margin-left: -30px;">2분</span>
+                            </div>
+                        </div>
+                        <div class="duration-display">
+                            <input type="number" id="duration-input" min="10" max="120" value="30">
+                            <span>초</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 섹션 3: 스크립트 구성 -->
+        <section class="section" id="section-script">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <div class="section-title">
+                    <h2>스크립트 구성</h2>
+                    <p>AI가 입력 내용을 분석하여 영상 스크립트를 생성합니다</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <button class="generate-btn" id="generate-script-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                    </svg>
+                    스크립트 생성
+                </button>
+                
+                <div class="script-loading" id="script-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>AI가 스크립트를 생성하고 있습니다...</p>
+                </div>
+                
+                <div class="script-result" id="script-result" style="display: none;">
+                    <div class="script-header">
+                        <h4>생성된 스크립트</h4>
+                        <div class="script-actions">
+                            <button class="script-action-btn" id="add-cut-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"/>
+                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                컷 추가
+                            </button>
+                            <button class="script-action-btn" id="regenerate-script-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23,4 23,10 17,10"/>
+                                    <path d="M20.49,15a9,9,0,1,1-2.12-9.36L23,10"/>
+                                </svg>
+                                다시 생성
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cuts-container" id="cuts-container">
+                        <!-- 컷들이 여기에 동적으로 추가됨 -->
+                    </div>
+                    <div class="script-summary">
+                        <span>총 <strong id="total-cuts">0</strong>개 컷</span>
+                        <span class="divider">|</span>
+                        <span>전체 시간: <strong id="total-duration">0</strong>초</span>
+                    </div>
+                </div>
+
+                <!-- 자막 옵션 -->
+                <div class="setting-group" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <h3 class="setting-label">📝 자막 옵션</h3>
+                    <div class="subtitle-options">
+                        <label class="subtitle-option">
+                            <input type="radio" name="subtitle-style" value="keyword" checked>
+                            <div class="option-content">
+                                <span class="option-title">🔑 주요 키워드 강조</span>
+                                <span class="option-desc">핵심 단어만 크게 표시</span>
+                            </div>
+                        </label>
+                        <label class="subtitle-option">
+                            <input type="radio" name="subtitle-style" value="full">
+                            <div class="option-content">
+                                <span class="option-title">📃 전체 자막</span>
+                                <span class="option-desc">모든 나레이션 표시</span>
+                            </div>
+                        </label>
+                        <label class="subtitle-option">
+                            <input type="radio" name="subtitle-style" value="custom">
+                            <div class="option-content">
+                                <span class="option-title">✏️ 직접 입력</span>
+                                <span class="option-desc">자막 스타일 커스텀</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="custom-subtitle-input" id="custom-subtitle-input" style="display: none;">
+                        <textarea id="custom-subtitle-text" placeholder="자막 스타일을 직접 입력하세요..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 4: 음성 생성 -->
+        <section class="section" id="section-voice">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <div class="section-title">
+                    <h2>음성 생성</h2>
+                    <p>나레이션 음성 스타일을 선택하고 생성하세요</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="voice-presets">
+                    <div class="voice-category">
+                        <h4>👨 남성 음성</h4>
+                        <div class="voice-options">
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="male-announcer" checked>
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🎙️ 아나운서 <span class="voice-badge premium">추천</span></span>
+                                        <span class="voice-desc">뉴스 앵커처럼 또렷하고 신뢰감 있는</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="male-announcer" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="male-energetic">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">⚡ 활기찬</span>
+                                        <span class="voice-desc">쇼호스트처럼 에너지 넘치는 밝은</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="male-energetic" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="male-bright">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">☀️ 밝은</span>
+                                        <span class="voice-desc">라디오 DJ처럼 친근하고 따뜻한</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="male-bright" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="male-sophisticated">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🎩 세련된</span>
+                                        <span class="voice-desc">다큐 내레이션처럼 낮고 중후한</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="male-sophisticated" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="male-young">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🌟 젊은</span>
+                                        <span class="voice-desc">유튜버처럼 젊고 캐주얼한</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="male-young" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="voice-category">
+                        <h4>👩 여성 음성</h4>
+                        <div class="voice-options">
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="female-announcer">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🎙️ 아나운서 <span class="voice-badge premium">추천</span></span>
+                                        <span class="voice-desc">뉴스 앵커처럼 전문적이고 또렷한</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="female-announcer" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="female-energetic">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">⚡ 활기찬</span>
+                                        <span class="voice-desc">쇼핑호스트처럼 밝고 생기있는</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="female-energetic" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="female-bright">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">☀️ 밝은</span>
+                                        <span class="voice-desc">안내방송처럼 따뜻하고 부드러운</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="female-bright" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="female-sophisticated">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🎩 세련된</span>
+                                        <span class="voice-desc">프리미엄 브랜드처럼 차분하고 우아한</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="female-sophisticated" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                            <label class="voice-option">
+                                <input type="radio" name="voice-preset" value="female-young">
+                                <div class="voice-content">
+                                    <div class="voice-info">
+                                        <span class="voice-name">🌟 젊은</span>
+                                        <span class="voice-desc">귀엽고 발랄한 10~20대 스타일</span>
+                                    </div>
+                                    <button type="button" class="voice-preview-btn" data-voice="female-young" title="미리듣기">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="voice-category custom-voice">
+                        <h4>직접 입력</h4>
+                        <label class="voice-option full-width">
+                            <input type="radio" name="voice-preset" value="custom">
+                            <div class="voice-content">
+                                <div class="voice-info">
+                                    <span class="voice-name">커스텀 음성 스타일</span>
+                                    <span class="voice-desc">원하는 음성 특성을 직접 입력</span>
+                                </div>
+                            </div>
+                        </label>
+                        <div class="custom-voice-input" id="custom-voice-input" style="display: none;">
+                            <textarea id="custom-voice-text" placeholder="음성 스타일을 직접 입력하세요...&#10;예: 20대 여성, 명랑하고 톡톡 튀는 말투, 약간 빠른 템포"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 음성 클로닝 -->
+                    <div class="voice-category voice-cloning">
+                        <h4>음성 클로닝 <span class="voice-badge premium">Beta</span></h4>
+                        <label class="voice-option full-width">
+                            <input type="radio" name="voice-preset" value="clone">
+                            <div class="voice-content">
+                                <div class="voice-info">
+                                    <span class="voice-name">내 목소리로 생성</span>
+                                    <span class="voice-desc">음성 샘플을 업로드하여 나만의 목소리로 나레이션 생성</span>
+                                </div>
+                            </div>
+                        </label>
+                        <div class="voice-clone-upload" id="voice-clone-upload" style="display: none;">
+                            <div class="voice-clone-dropzone" id="voice-clone-dropzone">
+                                <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M24 8v24M16 24l8-8 8 8"/>
+                                    <path d="M8 36h32"/>
+                                </svg>
+                                <span class="clone-text">음성 샘플 업로드 (MP3/WAV)</span>
+                                <span class="clone-hint">10초 이상의 깨끗한 음성 녹음 권장</span>
+                                <input type="file" id="voice-clone-input" accept="audio/*" hidden>
+                            </div>
+                            <div class="voice-clone-preview" id="voice-clone-preview" style="display: none;">
+                                <div class="clone-file-info">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 18V5l12-2v13"/>
+                                        <circle cx="6" cy="18" r="3"/>
+                                        <circle cx="18" cy="16" r="3"/>
+                                    </svg>
+                                    <span id="clone-file-name">voice_sample.mp3</span>
+                                </div>
+                                <button type="button" id="remove-clone-file" class="clone-remove-btn">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/>
+                                        <line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="clone-notice">
+                                * 음성 클로닝은 업로드한 음성의 특성을 학습하여 유사한 음성을 생성합니다.<br>
+                                * 본인 또는 사용 허가된 음성만 업로드해주세요.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BGM 설정 -->
+                <div class="bgm-settings" style="margin-top: 32px; padding: 20px; background: var(--bg-glass); border-radius: 12px; border: 1px solid var(--border);">
+                    <h4 style="margin-bottom: 16px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                        🎵 배경음악 (BGM)
+                        <span class="optional-badge">선택</span>
+                    </h4>
+                    <div class="bgm-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="none" checked style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">🔇 없음</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">음악 없이 음성만</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="corporate" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">🏢 비즈니스</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">차분하고 전문적인 분위기</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="upbeat" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">🎉 경쾌한</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">밝고 활기찬 에너지</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="emotional" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">💝 감성적인</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">따뜻하고 감동적인 느낌</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="cinematic" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">🎬 시네마틱</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">영화 같은 웅장한 분위기</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="modern" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">✨ 모던</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">세련되고 현대적인 느낌</span>
+                            </div>
+                        </label>
+                        <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                            <input type="radio" name="bgm-preset" value="custom-upload" style="accent-color: var(--primary);">
+                            <div>
+                                <span style="display: block; font-weight: 500; color: var(--text-primary);">📁 직접 업로드</span>
+                                <span style="font-size: 11px; color: var(--text-secondary);">내 음악 파일 사용</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- BGM 업로드 영역 -->
+                    <div class="bgm-upload-area" id="bgm-upload-area" style="display: none; margin-top: 16px;">
+                        <div class="bgm-dropzone" id="bgm-dropzone" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px; border: 2px dashed var(--border); border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s;">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted);">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <circle cx="18" cy="16" r="3"/>
+                            </svg>
+                            <span style="font-weight: 500; color: var(--text-primary);">BGM 파일 업로드</span>
+                            <span style="font-size: 12px; color: var(--text-muted);">MP3, WAV 형식 지원</span>
+                            <input type="file" id="bgm-file-input" accept="audio/*" hidden>
+                        </div>
+                        <div class="bgm-file-preview" id="bgm-file-preview" style="display: none; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-dark); border-radius: 8px; margin-top: 12px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+                                    <path d="M9 18V5l12-2v13"/>
+                                    <circle cx="6" cy="18" r="3"/>
+                                    <circle cx="18" cy="16" r="3"/>
+                                </svg>
+                                <span id="bgm-file-name" style="font-weight: 500; color: var(--text-primary);">bgm.mp3</span>
+                            </div>
+                            <button type="button" id="remove-bgm-file" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border); border-radius: 50%; color: var(--text-muted); cursor: pointer;">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bgm-volume-control" id="bgm-volume-control" style="margin-top: 16px; display: none;">
+                        <label style="display: flex; align-items: center; gap: 12px; color: var(--text-secondary); font-size: 13px;">
+                            <span>BGM 볼륨</span>
+                            <input type="range" id="bgm-volume" min="5" max="50" value="20" style="flex: 1; accent-color: var(--primary);">
+                            <span id="bgm-volume-value" style="min-width: 40px;">20%</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generate-voice-btn" style="margin-top: 32px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                    음성 생성
+                </button>
+
+                <div class="voice-loading" id="voice-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>음성을 생성하고 있습니다...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="voice-progress"></div>
+                    </div>
+                </div>
+
+                <div class="voice-result" id="voice-result" style="display: none;">
+                    <div class="audio-player">
+                        <div class="player-tabs">
+                            <button class="player-tab active" data-player="full">전체 재생</button>
+                            <button class="player-tab" data-player="cuts">컷별 재생</button>
+                        </div>
+                        <div class="player-content" id="player-full">
+                            <div class="waveform" id="waveform"></div>
+                            <div class="player-controls">
+                                <button class="play-btn" id="play-full-btn">
+                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="5,3 19,12 5,21"/>
+                                    </svg>
+                                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                                        <rect x="6" y="4" width="4" height="16"/>
+                                        <rect x="14" y="4" width="4" height="16"/>
+                                    </svg>
+                                </button>
+                                <div class="time-display">
+                                    <span id="current-time">0:00</span>
+                                    <span>/</span>
+                                    <span id="total-time">0:00</span>
+                                </div>
+                                <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0">
+                            </div>
+                        </div>
+                        <div class="player-content" id="player-cuts" style="display: none;">
+                            <div class="cuts-audio-list" id="cuts-audio-list">
+                                <!-- 컷별 오디오가 여기에 추가됨 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 5: 영상 생성 -->
+        <section class="section" id="section-generate">
+            <div class="section-header">
+                <div class="section-number">05</div>
+                <div class="section-title">
+                    <h2>영상 생성</h2>
+                    <p>최종 영상을 생성합니다</p>
+                </div>
+            </div>
+            <div class="section-content">
+                <!-- 영상 프리셋 -->
+                <div class="setting-group" style="margin-bottom: 24px;">
+                    <h3 class="setting-label">영상 프리셋</h3>
+                    <div class="video-preset-options">
+                        <label class="video-preset-option">
+                            <input type="radio" name="video-preset" value="youtube-shorts" checked>
+                            <div class="preset-content">
+                                <span class="preset-icon">📱</span>
+                                <span class="preset-name">YouTube Shorts</span>
+                                <span class="preset-spec">9:16 · 1080p · 30fps</span>
+                            </div>
+                        </label>
+                        <label class="video-preset-option">
+                            <input type="radio" name="video-preset" value="youtube-landscape">
+                            <div class="preset-content">
+                                <span class="preset-icon">🎬</span>
+                                <span class="preset-name">YouTube 가로</span>
+                                <span class="preset-spec">16:9 · 1080p · 30fps</span>
+                            </div>
+                        </label>
+                        <label class="video-preset-option">
+                            <input type="radio" name="video-preset" value="square">
+                            <div class="preset-content">
+                                <span class="preset-icon">⬜</span>
+                                <span class="preset-name">정사각형</span>
+                                <span class="preset-spec">1:1 · 1080p · 30fps</span>
+                            </div>
+                        </label>
+                        <label class="video-preset-option">
+                            <input type="radio" name="video-preset" value="custom">
+                            <div class="preset-content">
+                                <span class="preset-icon">⚙️</span>
+                                <span class="preset-name">직접 설정</span>
+                                <span class="preset-spec">커스텀 설정</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 자막 폰트 선택 -->
+                <div class="setting-group" style="margin-bottom: 24px;">
+                    <h3 class="setting-label">🔤 자막 폰트</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                            <div class="select-wrapper" style="flex: 1; min-width: 200px; max-width: 300px;">
+                                <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; display: block;">폰트 종류</label>
+                                <select id="subtitle-font-select" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-size: 14px;">
+                                    <option value="Noto Sans KR" selected>Noto Sans KR (노토 산스)</option>
+                                    <option value="Black Han Sans">Black Han Sans (블랙 한산스)</option>
+                                    <option value="Nanum Gothic">Nanum Gothic (나눔 고딕)</option>
+                                    <option value="Nanum Myeongjo">Nanum Myeongjo (나눔 명조)</option>
+                                    <option value="Nanum Pen Script">Nanum Pen Script (나눔 펜)</option>
+                                    <option value="Nanum Brush Script">Nanum Brush Script (나눔 붓)</option>
+                                    <option value="Jua">Jua (주아)</option>
+                                    <option value="Do Hyeon">Do Hyeon (도현)</option>
+                                    <option value="Sunflower">Sunflower (해바라기)</option>
+                                    <option value="Gaegu">Gaegu (개구)</option>
+                                    <option value="Hi Melody">Hi Melody (하이 멜로디)</option>
+                                    <option value="Cute Font">Cute Font (귀여운 폰트)</option>
+                                    <option value="Gamja Flower">Gamja Flower (감자꽃)</option>
+                                    <option value="East Sea Dokdo">East Sea Dokdo (동해독도)</option>
+                                    <option value="Stylish">Stylish (스타일리쉬)</option>
+                                    <option value="Poor Story">Poor Story (푸어 스토리)</option>
+                                    <option value="Single Day">Single Day (싱글데이)</option>
+                                    <option value="Kirang Haerang">Kirang Haerang (기랑 해랑)</option>
+                                    <option value="Yeon Sung">Yeon Sung (연성)</option>
+                                    <option value="Song Myung">Song Myung (송명)</option>
+                                    <option value="Black And White Picture">Black And White Picture</option>
+                                    <option value="Gugi">Gugi (구기)</option>
+                                    <option value="Gothic A1">Gothic A1 (고딕 A1)</option>
+                                    <option value="Dongle">Dongle (동글)</option>
+                                    <option value="Gowun Dodum">Gowun Dodum (고운 돋움)</option>
+                                    <option value="Gowun Batang">Gowun Batang (고운 바탕)</option>
+                                    <option value="IBM Plex Sans KR">IBM Plex Sans KR</option>
+                                    <option value="Hahmlet">Hahmlet (함렛)</option>
+                                    <option value="Noto Serif KR">Noto Serif KR (노토 세리프)</option>
+                                    <option value="Orbit">Orbit (오빗)</option>
+                                    <option value="Bagel Fat One">Bagel Fat One (베이글)</option>
+                                    <option value="Grandiflora One">Grandiflora One</option>
+                                    <option value="Moirai One">Moirai One</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 13px; color: var(--text-secondary); white-space: nowrap;">폰트 크기</label>
+                                <select id="subtitle-font-size" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-size: 14px;">
+                                    <option value="20">20px</option>
+                                    <option value="24">24px</option>
+                                    <option value="28">28px</option>
+                                    <option value="32" selected>32px</option>
+                                    <option value="36">36px</option>
+                                    <option value="40">40px</option>
+                                    <option value="44">44px</option>
+                                    <option value="48">48px</option>
+                                    <option value="52">52px</option>
+                                    <option value="56">56px</option>
+                                    <option value="60">60px</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 13px; color: var(--text-secondary); white-space: nowrap;">1줄 최대</label>
+                                <select id="subtitle-max-chars" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-size: 14px;">
+                                    <option value="10">10자</option>
+                                    <option value="11">11자</option>
+                                    <option value="12">12자</option>
+                                    <option value="13">13자</option>
+                                    <option value="14">14자</option>
+                                    <option value="15" selected>15자</option>
+                                    <option value="16">16자</option>
+                                    <option value="17">17자</option>
+                                    <option value="18">18자</option>
+                                    <option value="19">19자</option>
+                                    <option value="20">20자</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="font-preview" style="padding: 20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; border: 1px solid var(--border); position: relative; overflow: hidden;">
+                            <div id="font-preview-container" style="display: flex; align-items: center; justify-content: center; min-height: 120px;">
+                                <p id="font-preview-text" style="font-size: 32px; color: #FFFFFF; text-align: center; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: 'Noto Sans KR', sans-serif; max-width: 100%; word-wrap: break-word; line-height: 1.4;">
+                                    신한 프리미어 숏폼 자막<br>(줄바꿈)테스트 화면입니다.
+                                </p>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 8px;">
+                                선택한 폰트/크기/자수 설정이 반영된 미리보기
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 세부 영상 옵션 (직접 설정 시 표시) -->
+                <div class="video-options" id="custom-video-options" style="display: none;">
+                    <div class="option-group">
+                        <label>화질</label>
+                        <div class="select-wrapper">
+                            <select id="video-quality">
+                                <option value="720p">720p (HD)</option>
+                                <option value="1080p" selected>1080p (Full HD)</option>
+                                <option value="4k">4K (Ultra HD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="option-group">
+                        <label>비율</label>
+                        <div class="ratio-buttons">
+                            <button class="ratio-btn active" data-ratio="9:16">
+                                <div class="ratio-icon vertical"></div>
+                                <span>9:16</span>
+                            </button>
+                            <button class="ratio-btn" data-ratio="16:9">
+                                <div class="ratio-icon horizontal"></div>
+                                <span>16:9</span>
+                            </button>
+                            <button class="ratio-btn" data-ratio="1:1">
+                                <div class="ratio-icon square"></div>
+                                <span>1:1</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="option-group">
+                        <label>FPS</label>
+                        <div class="select-wrapper">
+                            <select id="video-fps">
+                                <option value="24">24fps (영화)</option>
+                                <option value="30" selected>30fps (표준)</option>
+                                <option value="60">60fps (부드러움)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 영상 생성 (비밀번호 | 버튼) -->
+                <div class="generate-row" style="display: flex; gap: 16px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); align-items: flex-end;">
+                    <div class="password-input" style="flex: 1; max-width: 200px;">
+                        <label>비밀번호</label>
+                        <input type="password" id="video-password" maxlength="4" placeholder="●●●●">
+                    </div>
+                    <button class="generate-btn primary" id="generate-video-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="23,7 16,12 23,17 23,7"/>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                        </svg>
+                        영상 생성
+                    </button>
+                </div>
+
+                <div class="video-loading" id="video-loading" style="display: none;">
+                    <div class="loading-animation">
+                        <div class="loading-circle"></div>
+                        <div class="loading-circle"></div>
+                        <div class="loading-circle"></div>
+                    </div>
+                    <h4>영상을 생성하고 있습니다</h4>
+                    <p id="video-loading-status">영상 생성 준비 중...</p>
+                    <div class="progress-bar large">
+                        <div class="progress-fill" id="video-progress"></div>
+                    </div>
+                    <span class="progress-text" id="video-progress-text">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 6: 영상 미리보기 -->
+        <section class="section" id="section-preview">
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="section-number">06</div>
+                    <div class="section-title">
+                        <h2>영상 미리보기</h2>
+                        <p>생성된 영상을 확인하고 다운로드하세요</p>
+                    </div>
+                </div>
+                <!-- 로고 추가 (헤더 우측) -->
+                <div class="logo-header-area" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-glass); border-radius: 10px; border: 1px solid var(--border);">
+                    <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">🏷️ 로고</span>
+                    <div class="logo-dropzone" id="logo-dropzone" style="width: 150px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 2px dashed var(--primary); border-radius: 8px; transition: all 0.2s; background: rgba(37, 99, 235, 0.05);">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--primary)" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        <span style="font-size: 10px; color: var(--primary); margin-top: 2px;">업로드</span>
+                        <input type="file" id="logo-input" accept="image/*" hidden>
+                    </div>
+                    <div class="logo-preview-container" id="logo-preview-container" style="display: none; position: relative; width: 150px; height: 60px; background: var(--bg-dark); border-radius: 8px; overflow: hidden;">
+                        <img id="logo-preview-img" src="" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <button class="logo-remove" id="logo-remove" style="position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #FF6464; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="white" stroke-width="3">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="logo-settings" id="logo-settings" style="display: none; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; color: var(--text-secondary);">미리보기 화면에서 드래그로 위치/크기 조절</span>
+                    </div>
+                </div>
+            </div>
+            <div class="section-content">
+                <div class="preview-placeholder" id="preview-placeholder">
+                    <div class="placeholder-icon">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <rect x="8" y="12" width="48" height="40" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <polygon points="26,24 26,40 40,32" fill="currentColor" opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <p>영상을 생성하면 여기에 미리보기가 표시됩니다</p>
+                </div>
+
+                <div class="video-preview" id="video-preview" style="display: none;">
+                    <div class="video-container" id="video-container">
+                        <video id="preview-video" controls>
+                            <source src="" type="video/mp4">
+                        </video>
+                        <div class="logo-overlay" id="logo-overlay" style="display: none;">
+                            <img id="logo-overlay-img" src="" alt="Logo">
+                        </div>
+                    </div>
+
+                    <!-- 주의문구 설정 (다시 생성/다운로드 버튼 위) -->
+                    <div class="disclaimer-settings" style="margin: 16px 0; padding: 12px 16px; background: var(--bg-glass); border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 500; color: var(--text-primary); white-space: nowrap;">주의 문구:</span>
+                            <input type="text" id="disclaimer-text" value="본 영상은 신한 Premier 패스파인더 전문위원의 기고문을 바탕으로 AI로 생성된 영상입니다." placeholder="영상 하단에 표시될 주의문구" style="flex: 1; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 12px;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: var(--text-secondary); white-space: nowrap;">
+                                <input type="checkbox" id="disclaimer-enabled" style="accent-color: var(--primary);">
+                                표시
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="preview-actions">
+                        <button class="action-btn secondary" id="regenerate-video-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23,4 23,10 17,10"/>
+                                <path d="M20.49,15a9,9,0,1,1-2.12-9.36L23,10"/>
+                            </svg>
+                            다시 생성
+                        </button>
+                        <button class="action-btn primary" id="download-btn-with-subtitle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7,10 12,15 17,10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            자막 포함
+                        </button>
+                        <button class="action-btn secondary" id="download-btn-no-subtitle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7,10 12,15 17,10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            자막 제외
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <p>© 2026 신한 Premier Shorts Studio by 신한Premier사업부</p>
+    </footer>
+
+    <!-- 토스트 알림 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- PDF.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+
+    <!-- Canvas + MediaRecorder + Web Audio API로 영상 합치기 (FFmpeg 불필요) -->
+
+    <script src="app.js"></script>
+</body>
+</html>
