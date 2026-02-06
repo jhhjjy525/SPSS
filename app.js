@@ -49,7 +49,7 @@ const STYLE_TEMPLATES = {
     calm still life arrangements: single branch with leaves, ceramic cup, smooth stones,
     极慢 gentle camera movements, static locked-off shots emphasizing tranquility,
     no people - focus entirely on objects, space, and subtle details,
-    whisper-quiet atmosphere with maximum negative space`,
+    whisper-quiet atmosphere with maximum negative space,
     quiet and serene atmosphere, balanced text and whitespace,
     delivering one clear key message effectively,
     gentle ambient sounds or soft piano melody,
