@@ -21,3 +21,8 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Secrets & Credentials
+service-account-key.json
+*.json.secret
+*-key.json
