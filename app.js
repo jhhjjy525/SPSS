@@ -197,7 +197,7 @@ const state = {
     disclaimerEnabled: false,  // 기본값 미표시
     subtitleFont: 'Noto Sans KR',  // 선택된 자막 폰트 (기본: 노토산스)
     subtitleFontSize: 32,  // 자막 폰트 크기 (기본: 32px)
-    subtitleMaxChars: 15,  // 자막 1줄 최대 글자 수 (10~20)
+    subtitleMode: 'keyword',  // 자막 모드: 'keyword' (키워드 강조) 또는 'full' (전체 자막)
     script: null
 };
 
@@ -473,65 +473,98 @@ function initializeDurationListeners() {
 
 // Subtitle listeners
 function initializeSubtitleListeners() {
-    document.querySelectorAll('input[name="subtitle-style"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            state.subtitleStyle = e.target.value;
-            document.getElementById('custom-subtitle-input').style.display =
-                e.target.value === 'custom' ? 'block' : 'none';
-            console.log(`📝 자막 스타일 변경: ${e.target.value}`);
-        });
-    });
+    // Subtitle mode toggle (키워드 강조 ↔ 전체 자막)
+    const subtitleModeToggle = document.getElementById('subtitle-mode-toggle');
+    const subtitleModeLabel = document.getElementById('subtitle-mode-label');
 
-    // Custom subtitle style text input
-    const customSubtitleText = document.getElementById('custom-subtitle-text');
-    if (customSubtitleText) {
-        customSubtitleText.addEventListener('input', (e) => {
-            state.customSubtitleStyle = e.target.value;
+    if (subtitleModeToggle && subtitleModeLabel) {
+        subtitleModeToggle.addEventListener('change', (e) => {
+            state.subtitleMode = e.target.checked ? 'full' : 'keyword';
+            subtitleModeLabel.textContent = e.target.checked ? '전체 자막' : '키워드 강조';
+            console.log(`📝 자막 모드 변경: ${state.subtitleMode}`);
+
+            // 스크립트가 이미 생성되어 있으면 자막 실시간 업데이트
+            if (state.script && state.script.cuts) {
+                updateSubtitlesRealtime();
+            }
         });
     }
 
     // Subtitle font selection
     const fontSelect = document.getElementById('subtitle-font-select');
     const fontSizeSelect = document.getElementById('subtitle-font-size');
-    const maxCharsSelect = document.getElementById('subtitle-max-chars');
     const videoPresetInputs = document.querySelectorAll('input[name="video-preset"]');
     const fontPreviewText = document.getElementById('font-preview-text');
     const fontPreviewContainer = document.getElementById('font-preview-container');
 
     // Function to update preview
     function updateFontPreview() {
-        if (!fontPreviewText || !fontPreviewContainer) return;
+        if (!fontPreviewText || !fontPreviewContainer) {
+            console.warn('⚠️ 폰트 미리보기 요소를 찾을 수 없습니다.');
+            return;
+        }
 
         const selectedFont = fontSelect ? fontSelect.value : 'Noto Sans KR';
         const selectedSize = fontSizeSelect ? parseInt(fontSizeSelect.value) : 32;
         const selectedPreset = document.querySelector('input[name="video-preset"]:checked')?.value || 'youtube-shorts';
 
+        console.log(`📺 폰트 미리보기 업데이트 - 폰트: ${selectedFont}, 크기: ${selectedSize}px, 프리셋: ${selectedPreset}`);
+
         // Update font and size
         fontPreviewText.style.fontFamily = `"${selectedFont}", sans-serif`;
         fontPreviewText.style.fontSize = `${selectedSize}px`;
 
+        // Update preview text based on script
+        if (state.script && state.script.cuts && state.script.cuts.length > 0) {
+            // Show subtitles from cuts, cycling through them
+            const currentCutIndex = window.previewCutIndex || 0;
+            const cut = state.script.cuts[currentCutIndex];
+            const subtitleText = state.subtitleMode === 'full'
+                ? (cut.narration || '자막 미리보기')
+                : (cut.subtitle || cut.narration || '자막 미리보기');
+
+            fontPreviewText.innerHTML = subtitleText.replace(/\n/g, '<br>');
+
+            // Cycle to next cut for next update
+            window.previewCutIndex = (currentCutIndex + 1) % state.script.cuts.length;
+        } else {
+            fontPreviewText.innerHTML = '신한 프리미어 숏폼 자막<br>(줄바꿈)테스트 화면입니다.';
+        }
+
+        // Add smooth transition
+        fontPreviewContainer.style.transition = 'all 0.3s ease';
+
         // Update preview container aspect ratio based on preset
+        // Clear previous styles
+        fontPreviewContainer.style.removeProperty('min-height');
+
         if (selectedPreset === 'youtube-shorts') {
             // Vertical 9:16
             fontPreviewContainer.style.width = '180px';
             fontPreviewContainer.style.height = '320px';
             fontPreviewContainer.style.margin = '0 auto';
+            fontPreviewContainer.style.maxWidth = '180px';
         } else if (selectedPreset === 'youtube-landscape') {
             // Horizontal 16:9
             fontPreviewContainer.style.width = '100%';
             fontPreviewContainer.style.height = '200px';
             fontPreviewContainer.style.margin = '0';
+            fontPreviewContainer.style.maxWidth = '100%';
         } else if (selectedPreset === 'square') {
             // Square 1:1
             fontPreviewContainer.style.width = '280px';
             fontPreviewContainer.style.height = '280px';
             fontPreviewContainer.style.margin = '0 auto';
+            fontPreviewContainer.style.maxWidth = '280px';
         } else {
             // Custom - default to horizontal
             fontPreviewContainer.style.width = '100%';
             fontPreviewContainer.style.height = '200px';
             fontPreviewContainer.style.margin = '0';
+            fontPreviewContainer.style.maxWidth = '100%';
         }
+
+        console.log(`✅ 미리보기 컨테이너 크기 설정: ${fontPreviewContainer.style.width} x ${fontPreviewContainer.style.height}`);
     }
 
     if (fontSelect) {
@@ -551,14 +584,6 @@ function initializeSubtitleListeners() {
         });
     }
 
-    // Subtitle max characters per line
-    if (maxCharsSelect) {
-        maxCharsSelect.addEventListener('change', (e) => {
-            state.subtitleMaxChars = parseInt(e.target.value);
-            console.log(`📏 자막 1줄 최대 글자 수: ${e.target.value}자`);
-        });
-    }
-
     // Video preset change listener for preview update
     videoPresetInputs.forEach(input => {
         input.addEventListener('change', updateFontPreview);
@@ -566,6 +591,36 @@ function initializeSubtitleListeners() {
 
     // Initialize preview
     updateFontPreview();
+}
+
+// Update subtitles in real-time based on toggle state
+function updateSubtitlesRealtime() {
+    if (!state.script || !state.script.cuts) {
+        console.warn('⚠️ 스크립트가 없어 자막을 업데이트할 수 없습니다.');
+        return;
+    }
+
+    console.log(`🔄 자막 실시간 업데이트: ${state.subtitleMode}`);
+
+    // Update each cut's displayed subtitle
+    state.script.cuts.forEach((cut, index) => {
+        const cutElement = document.querySelector(`[data-cut-index="${index}"]`);
+        if (!cutElement) return;
+
+        const subtitleElement = cutElement.querySelector('.cut-subtitle');
+        if (!subtitleElement) return;
+
+        // Update subtitle based on mode
+        if (state.subtitleMode === 'full') {
+            // Full subtitle: use narration
+            subtitleElement.textContent = cut.narration || '';
+        } else {
+            // Keyword mode: use keyword subtitle (generated by LLM)
+            subtitleElement.textContent = cut.subtitle || cut.narration || '';
+        }
+    });
+
+    showToast(`✅ 자막 모드 변경: ${state.subtitleMode === 'full' ? '전체 자막' : '키워드 강조'}`, 'success');
 }
 
 // Logo listeners
@@ -1634,14 +1689,25 @@ STYLE: ${state.videoStyle === 'custom' ? state.customStyle : styleDesc}
 
 REQUIREMENTS:
 - Narration: 입력 콘텐츠 기반 완전한 구어체 한국어 문장 (최대 ${maxNarrationChars}자)
-- Subtitle: 나레이션 요약 (줄당 최대 10자, 2줄)
-- Visual Description: 상세한 영어 설명 (10문장 이상)
+- Subtitle (keyword mode): 나레이션 핵심 키워드 요약 (완결된 문장, 25~45자, 2~3줄)
+- Subtitle (full mode): 나레이션 전체 텍스트 그대로
+- Visual Description Flux: Flux AI 이미지 생성용 프롬프트 (영어)
+- Visual Description Kling: Kling Image-to-Video용 동작/카메라 움직임 프롬프트 (영어)
 
-VISUAL DESCRIPTION MUST INCLUDE:
-1. Topic summary, 2. Visual style, 3. Main subject, 4. Props
-5. Environment, 6. Background layers, 7. Lighting, 8. Color palette
-9. Camera angle, 10. Camera movement, 11-15. Textures, atmosphere
-⚠️ IMPORTANT: If people appear, they MUST be Korean/Asian people.
+VISUAL DESCRIPTION FLUX (이미지 생성용):
+- 정적인 장면 묘사에 집중
+- 포함 요소: 주제, 비주얼 스타일, 주요 피사체, 소품, 환경, 배경, 조명, 색상 팔레트
+- 10문장 이상의 상세한 영어 설명
+- 인물이 등장하면 반드시 "Korean person" 명시하고 50% 이하 비중
+- 텍스트/문자 포함 금지
+- Example: "Premium luxury financial office, marble desk surface with gold veining, Korean business professional in background, soft golden hour lighting, warm ambient glow, minimalist composition, no text, clean image"
+
+VISUAL DESCRIPTION KLING (영상 동작용):
+- 카메라 움직임과 피사체 동작에 집중
+- 포함 요소: 카메라 무브먼트, 피사체 움직임, 전환 효과
+- 5~7문장의 동작 중심 영어 설명
+- Ken Burns 효과, 팬, 줌, 회전 등 구체적 움직임 명시
+- Example: "Slow zoom in towards the desk surface, gentle Ken Burns effect panning left to right, subtle parallax movement revealing depth, smooth camera glide revealing golden details, elegant transition with soft focus shift"
 
 ⚠️ PERSON PROPORTION LIMIT (매우 중요):
 - 인물/사람이 이미지에서 차지하는 비중은 최대 50% 이하로 제한
@@ -1662,7 +1728,18 @@ RULES:
 ${subtitleGuidelines}
 
 OUTPUT JSON ONLY (no markdown, no explanation):
-{"cuts":[{"cutNumber":1,"duration":${durationPerCut},"narration":"[입력 콘텐츠 기반 나레이션]","subtitle":"[요약]\\n[자막]","visualDescription":"${stylePrefix}, [입력 콘텐츠 관련 시각적 설명], no text, clean image."}]}`;
+{
+  "cuts": [
+    {
+      "cutNumber": 1,
+      "duration": ${durationPerCut},
+      "narration": "[입력 콘텐츠 기반 나레이션]",
+      "subtitle": "[키워드 강조 모드용 완결된 문장 자막]",
+      "visualDescriptionFlux": "${stylePrefix}, [정적 이미지 장면 설명], no text, clean image",
+      "visualDescriptionKling": "[카메라 움직임과 피사체 동작 설명]"
+    }
+  ]
+}`;
 
     try {
         const response = await fetch(`${CONFIG.GEMINI_API_URL}?key=${CONFIG.GEMINI_API_KEY}`, {
@@ -1765,7 +1842,7 @@ function renderScript() {
             : '';
 
         const cutHtml = `
-            <div class="cut-card" data-index="${index}">
+            <div class="cut-card" data-index="${index}" data-cut-index="${index}">
                 <div class="cut-header">
                     <div class="cut-number">
                         <span class="cut-badge">컷 ${index + 1}</span>
@@ -1785,11 +1862,15 @@ function renderScript() {
                     </div>
                     <div class="cut-field">
                         <label>자막 (** 로 강조 가능, 예: **중요**)</label>
-                        <textarea onchange="updateCut(${index}, 'subtitle', this.value)" placeholder="자막 내용을 입력하세요...">${cut.subtitle || cut.narration || ''}</textarea>
+                        <textarea class="cut-subtitle" onchange="updateCut(${index}, 'subtitle', this.value)" placeholder="자막 내용을 입력하세요...">${cut.subtitle || cut.narration || ''}</textarea>
                     </div>
                     <div class="cut-field">
-                        <label>영상 설명 (Visual Description)</label>
-                        <textarea onchange="updateCut(${index}, 'visualDescription', this.value)">${cut.visualDescription}</textarea>
+                        <label>🖼️ Visual Description (Flux - 이미지 생성용)</label>
+                        <textarea onchange="updateCut(${index}, 'visualDescriptionFlux', this.value)" placeholder="정적 이미지 장면 설명...">${cut.visualDescriptionFlux || cut.visualDescription || ''}</textarea>
+                    </div>
+                    <div class="cut-field">
+                        <label>🎬 Visual Description (Kling - 영상 동작용)</label>
+                        <textarea onchange="updateCut(${index}, 'visualDescriptionKling', this.value)" placeholder="카메라 움직임과 피사체 동작...">${cut.visualDescriptionKling || 'Smooth Ken Burns effect, slow zoom in, gentle camera movement'}</textarea>
                     </div>
                     <div class="cut-field cut-media-upload">
                         <label>
@@ -4386,10 +4467,25 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
     // Ensure loading UI elements exist
     const loadingEl = document.getElementById('video-loading');
     const loadingStatusEl = document.getElementById('video-loading-status');
+    const progressEl = document.getElementById('video-progress');
+    const progressTextEl = document.getElementById('video-progress-text');
+
     if (loadingEl) loadingEl.style.display = 'block';
-    if (loadingStatusEl) loadingStatusEl.textContent = '영상 준비 중...';
+    if (loadingStatusEl) loadingStatusEl.textContent = '영상 합치기 준비 중...';
+    if (progressEl) progressEl.style.width = '0%';
+    if (progressTextEl) progressTextEl.textContent = '0%';
+
+    // Helper function to update progress
+    const updateProgress = (step, total, message) => {
+        const percent = Math.round((step / total) * 100);
+        if (progressEl) progressEl.style.width = `${percent}%`;
+        if (progressTextEl) progressTextEl.textContent = `${percent}%`;
+        if (loadingStatusEl) loadingStatusEl.textContent = message;
+    };
 
     try {
+        updateProgress(1, 10, '로고 및 리소스 준비 중...');
+
         // Step 0: Load logo image if available (will be overlaid during merge)
         let logoImg = null;
         if (state.logoFile) {
@@ -4400,6 +4496,8 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
                 console.warn('로고 로딩 실패:', e);
             }
         }
+
+        updateProgress(2, 10, '영상 컷 로딩 시작...');
 
         // Step 1: Load all video elements and decode TTS audio buffers
         const videoElements = [];
@@ -4415,7 +4513,7 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
             if (!cut.videoUrl) continue;
 
             const subtitleLabel = withSubtitles ? '' : ' (자막 제외)';
-            if (loadingStatusEl) loadingStatusEl.textContent = `컷 ${i + 1}/${cuts.length} 로딩 중...${subtitleLabel}`;
+            updateProgress(2 + (i / cuts.length) * 3, 10, `컷 ${i + 1}/${cuts.length} 로딩 중...${subtitleLabel}`);
 
             // Determine video source based on subtitle option
             let videoSrc = cut.videoUrl;
@@ -4591,6 +4689,7 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
                 const blobType = selectedMimeType.split(';')[0]; // e.g., 'video/webm'
                 const blob = new Blob(chunks, { type: blobType });
                 console.log(`📦 최종 영상 Blob: ${blobType}, 크기: ${(blob.size / 1024 / 1024).toFixed(2)}MB`);
+                updateProgress(10, 10, '영상 합치기 완료!');
                 audioContext.close();
                 resolve(blob);
             };
@@ -4648,6 +4747,7 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
                     let frameCount = 0;
 
                     console.log(`🎬 컷 ${cutIdx + 1} 녹화 시작 (${cutDuration.toFixed(1)}s)`);
+                    updateProgress(5 + (cutIdx / cuts.length) * 4, 10, `컷 ${cutIdx + 1}/${cuts.length} 녹화 중...`);
 
                     // Start TTS when video starts
                     if (currentTtsSource) {
@@ -4779,6 +4879,7 @@ async function mergeVideosInBrowser(cuts, includeTTS = true, bgmPreset = 'none',
 
             setTimeout(() => {
                 console.log('🎬 모든 컷 녹화 완료, 인코딩 중...');
+                updateProgress(9, 10, '영상 인코딩 중...');
                 mediaRecorder.stop();
                 if (bgmSource) {
                     try { bgmSource.stop(); } catch (e) {}

@@ -263,35 +263,6 @@
                     </div>
                 </div>
 
-                <!-- 영상 생성 방식 -->
-                <div class="setting-group">
-                    <h3 class="setting-label">영상 생성 방식</h3>
-                    <div class="generation-mode-options">
-                        <label class="generation-mode-option">
-                            <input type="radio" name="generation-mode" value="image" checked>
-                            <div class="option-content">
-                                <div class="mode-icon">🖼️</div>
-                                <div class="mode-info">
-                                    <span class="option-title">이미지 기반</span>
-                                    <span class="option-desc">고품질 이미지 + Ken Burns 효과</span>
-                                    <span class="mode-badge fast">빠름 · 저비용</span>
-                                </div>
-                            </div>
-                        </label>
-                        <label class="generation-mode-option">
-                            <input type="radio" name="generation-mode" value="video">
-                            <div class="option-content">
-                                <div class="mode-icon">🎬</div>
-                                <div class="mode-info">
-                                    <span class="option-title">AI 영상 기반</span>
-                                    <span class="option-desc">OpenAI Sora로 움직이는 영상 생성</span>
-                                    <span class="mode-badge premium">고품질 · 고비용</span>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
                 <!-- 영상 길이 -->
                 <div class="setting-group">
                     <h3 class="setting-label">🎬 영상 길이</h3>
@@ -324,12 +295,22 @@
                 </div>
             </div>
             <div class="section-content">
-                <button class="generate-btn" id="generate-script-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
-                    </svg>
-                    스크립트 생성
-                </button>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <button class="generate-btn" id="generate-script-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+                        </svg>
+                        스크립트 생성
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; background: var(--bg-glass); border-radius: 8px; border: 1px solid var(--border);">
+                        <span style="font-size: 13px; color: var(--text-secondary);">자막 모드:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="subtitle-mode-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span id="subtitle-mode-label" style="font-size: 13px; font-weight: 500; color: var(--primary);">키워드 강조</span>
+                    </div>
+                </div>
                 
                 <div class="script-loading" id="script-loading" style="display: none;">
                     <div class="loading-spinner"></div>
@@ -366,36 +347,6 @@
                     </div>
                 </div>
 
-                <!-- 자막 옵션 -->
-                <div class="setting-group" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-                    <h3 class="setting-label">📝 자막 옵션</h3>
-                    <div class="subtitle-options">
-                        <label class="subtitle-option">
-                            <input type="radio" name="subtitle-style" value="keyword" checked>
-                            <div class="option-content">
-                                <span class="option-title">🔑 주요 키워드 강조</span>
-                                <span class="option-desc">핵심 단어만 크게 표시</span>
-                            </div>
-                        </label>
-                        <label class="subtitle-option">
-                            <input type="radio" name="subtitle-style" value="full">
-                            <div class="option-content">
-                                <span class="option-title">📃 전체 자막</span>
-                                <span class="option-desc">모든 나레이션 표시</span>
-                            </div>
-                        </label>
-                        <label class="subtitle-option">
-                            <input type="radio" name="subtitle-style" value="custom">
-                            <div class="option-content">
-                                <span class="option-title">✏️ 직접 입력</span>
-                                <span class="option-desc">자막 스타일 커스텀</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="custom-subtitle-input" id="custom-subtitle-input" style="display: none;">
-                        <textarea id="custom-subtitle-text" placeholder="자막 스타일을 직접 입력하세요..."></textarea>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -602,12 +553,72 @@
                     </div>
                 </div>
 
+                <button class="generate-btn" id="generate-voice-btn" style="margin-top: 32px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                    음성 생성
+                </button>
+
+                <div class="voice-loading" id="voice-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>음성을 생성하고 있습니다...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="voice-progress"></div>
+                    </div>
+                </div>
+
+                <div class="voice-result" id="voice-result" style="display: none;">
+                    <div class="audio-player">
+                        <div class="player-tabs">
+                            <button class="player-tab active" data-player="full">전체 재생</button>
+                            <button class="player-tab" data-player="cuts">컷별 재생</button>
+                        </div>
+                        <div class="player-content" id="player-full">
+                            <div class="waveform" id="waveform"></div>
+                            <div class="player-controls">
+                                <button class="play-btn" id="play-full-btn">
+                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="5,3 19,12 5,21"/>
+                                    </svg>
+                                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                                        <rect x="6" y="4" width="4" height="16"/>
+                                        <rect x="14" y="4" width="4" height="16"/>
+                                    </svg>
+                                </button>
+                                <div class="time-display">
+                                    <span id="current-time">0:00</span>
+                                    <span>/</span>
+                                    <span id="total-time">0:00</span>
+                                </div>
+                                <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0">
+                            </div>
+                        </div>
+                        <div class="player-content" id="player-cuts" style="display: none;">
+                            <div class="cuts-audio-list" id="cuts-audio-list">
+                                <!-- 컷별 오디오가 여기에 추가됨 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- BGM 설정 -->
                 <div class="bgm-settings" style="margin-top: 32px; padding: 20px; background: var(--bg-glass); border-radius: 12px; border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 16px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
-                        🎵 배경음악 (BGM)
-                        <span class="optional-badge">선택</span>
-                    </h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h4 style="color: var(--text-primary); display: flex; align-items: center; gap: 8px; margin: 0;">
+                            🎵 배경음악 (BGM)
+                            <span class="optional-badge">선택</span>
+                        </h4>
+                        <button type="button" id="bgm-preview-btn" style="display: none; padding: 6px 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                                <polygon points="5,3 19,12 5,21"/>
+                            </svg>
+                            미리듣기
+                        </button>
+                    </div>
                     <div class="bgm-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
                         <label class="bgm-option" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-dark); border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
                             <input type="radio" name="bgm-preset" value="none" checked style="accent-color: var(--primary);">
@@ -696,58 +707,6 @@
                             <input type="range" id="bgm-volume" min="5" max="50" value="20" style="flex: 1; accent-color: var(--primary);">
                             <span id="bgm-volume-value" style="min-width: 40px;">20%</span>
                         </label>
-                    </div>
-                </div>
-
-                <button class="generate-btn" id="generate-voice-btn" style="margin-top: 32px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                        <line x1="12" y1="19" x2="12" y2="23"/>
-                        <line x1="8" y1="23" x2="16" y2="23"/>
-                    </svg>
-                    음성 생성
-                </button>
-
-                <div class="voice-loading" id="voice-loading" style="display: none;">
-                    <div class="loading-spinner"></div>
-                    <p>음성을 생성하고 있습니다...</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="voice-progress"></div>
-                    </div>
-                </div>
-
-                <div class="voice-result" id="voice-result" style="display: none;">
-                    <div class="audio-player">
-                        <div class="player-tabs">
-                            <button class="player-tab active" data-player="full">전체 재생</button>
-                            <button class="player-tab" data-player="cuts">컷별 재생</button>
-                        </div>
-                        <div class="player-content" id="player-full">
-                            <div class="waveform" id="waveform"></div>
-                            <div class="player-controls">
-                                <button class="play-btn" id="play-full-btn">
-                                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
-                                        <polygon points="5,3 19,12 5,21"/>
-                                    </svg>
-                                    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                                        <rect x="6" y="4" width="4" height="16"/>
-                                        <rect x="14" y="4" width="4" height="16"/>
-                                    </svg>
-                                </button>
-                                <div class="time-display">
-                                    <span id="current-time">0:00</span>
-                                    <span>/</span>
-                                    <span id="total-time">0:00</span>
-                                </div>
-                                <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0">
-                            </div>
-                        </div>
-                        <div class="player-content" id="player-cuts" style="display: none;">
-                            <div class="cuts-audio-list" id="cuts-audio-list">
-                                <!-- 컷별 오디오가 여기에 추가됨 -->
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -859,22 +818,6 @@
                                     <option value="52">52px</option>
                                     <option value="56">56px</option>
                                     <option value="60">60px</option>
-                                </select>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
-                                <label style="font-size: 13px; color: var(--text-secondary); white-space: nowrap;">1줄 최대</label>
-                                <select id="subtitle-max-chars" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-size: 14px;">
-                                    <option value="10">10자</option>
-                                    <option value="11">11자</option>
-                                    <option value="12">12자</option>
-                                    <option value="13">13자</option>
-                                    <option value="14">14자</option>
-                                    <option value="15" selected>15자</option>
-                                    <option value="16">16자</option>
-                                    <option value="17">17자</option>
-                                    <option value="18">18자</option>
-                                    <option value="19">19자</option>
-                                    <option value="20">20자</option>
                                 </select>
                             </div>
                         </div>
